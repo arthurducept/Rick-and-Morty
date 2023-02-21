@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:rickandmorty/components/characters_card.dart';
 import 'package:rickandmorty/models/character.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -26,20 +27,11 @@ class _HomePageState extends State<HomePage> {
       navigationBar: const CupertinoNavigationBar(
         middle: Text('Rick and Morty Fanbase'),
       ),
+      backgroundColor: CupertinoColors.systemBackground,
       child: ListView.builder(
         itemCount: 25,
         itemBuilder: (BuildContext context, int index) {
-          return CupertinoListTile(
-            title: Text(characters[index].name),
-            onTap: () {
-              // Navigator.push(
-              //   context,
-              //   CupertinoPageRoute(
-              //     builder: (context) => CharacterDetails(character: characters[index]),
-              //   ),
-              // );
-            },
-          );
+          return CharacterCard(index: index);
         },
       ),
     );
