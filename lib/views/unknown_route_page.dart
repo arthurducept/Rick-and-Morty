@@ -11,7 +11,6 @@ class UnknownRoutePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: Center(child: Text('No route defined for ${route.name}')),
     );
   }

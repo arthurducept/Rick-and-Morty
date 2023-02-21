@@ -13,7 +13,7 @@ class App extends StatelessWidget {
       theme: const CupertinoThemeData(
         primaryColor: CupertinoColors.activeBlue,
       ),
-      initialRoute: CharacterDetails.routeName,
+      initialRoute: HomePage.routeName,
       onGenerateRoute: _generateRoute,
       onGenerateInitialRoutes: _generateInitialRoutes,
     );
@@ -21,6 +21,8 @@ class App extends StatelessWidget {
 
   Route<dynamic> _generateRoute(RouteSettings settings) {
     Map<String, dynamic> arguments = {};
+    // print the route
+    debugPrint("route: ${settings.name}");
     if (settings.arguments != null) {
       arguments = settings.arguments as Map<String, dynamic>;
     }
