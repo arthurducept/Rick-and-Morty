@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:rickandmorty/components/characters_card.dart';
+import 'package:rickandmorty/components/search_bar.dart';
 import 'package:rickandmorty/models/character.dart';
 
 class HomePage extends StatefulWidget {
@@ -26,10 +27,32 @@ class _HomePageState extends State<HomePage> {
     String title = dotenv.get('FLUTTER_APP_TITLE'); // Mandatory
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: Text(title),
-      ),
+          middle: Text(title),
+          // icon filter button
+          trailing: GestureDetector(
+              onTap: () {
+                if (dotenv.get('FLUTTER_APP_DEBUG') == 'true') {
+                  debugPrint('Filter button pressed');
+                }
+              },
+              child: const Icon(
+                CupertinoIcons.slider_horizontal_3,
+                color: CupertinoColors.systemBlue,
+              ))),
       backgroundColor: CupertinoColors.secondarySystemBackground,
       child: GetCharactersList(),
+      // child: // search bar and below, the ListView of GetCharactersList
+      //     Expanded(
+      //   child: Column(
+      //     children: const <Widget>[
+      //       // search bar
+      //       SearchBar(),
+      //       Expanded(
+      //         child: GetCharactersList(),
+      //       ),
+      //     ],
+      //   ),
+      // ),
     );
   }
 }
