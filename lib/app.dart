@@ -53,8 +53,14 @@ class App extends StatelessWidget {
         );
       case CharacterDetails.routeName:
         return CupertinoPageRoute(
-          builder: (_) =>
-              CharacterDetails(characterId: arguments['characterId']), // PATCH
+          builder: (_) => CharacterDetails(
+            id: arguments['id'],
+            gender: arguments['gender'],
+            image: arguments['image'],
+            name: arguments['name'],
+            species: arguments['species'],
+            status: arguments['status'],
+          ),
           settings: settings,
         );
       default:

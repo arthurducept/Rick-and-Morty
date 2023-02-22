@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:rickandmorty/components/status_badge.dart';
 import 'package:rickandmorty/views/character_details.dart';
+
+import 'gender_icon.dart';
 
 class CharactersCard extends StatelessWidget {
   final int characterId;
@@ -27,7 +30,12 @@ class CharactersCard extends StatelessWidget {
           context,
           CharacterDetails.routeName,
           arguments: {
-            'characterId': characterId,
+            'id': characterId,
+            'name': name,
+            'image': imageUrl,
+            'status': status,
+            'species': species,
+            'gender': gender,
           },
         );
       },
@@ -91,27 +99,7 @@ class CharactersCard extends StatelessWidget {
                       children: [
                         GenderIcon(gender: gender),
                         const SizedBox(width: 5),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 5,
-                          ),
-                          decoration: BoxDecoration(
-                            color: status == 'Alive'
-                                ? CupertinoColors.activeGreen
-                                : status == 'Dead'
-                                    ? CupertinoColors.destructiveRed
-                                    : CupertinoColors.systemYellow,
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Text(
-                            status,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: CupertinoColors.label,
-                            ),
-                          ),
-                        ),
+                        GetStatusBadge(status: status),
                         const SizedBox(width: 5),
                         Text(
                           species,
@@ -153,32 +141,5 @@ class CharactersCard extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class GenderIcon extends StatelessWidget {
-  const GenderIcon({
-    super.key,
-    required this.gender,
-  });
-
-  final String gender;
-
-  @override
-  Widget build(BuildContext context) {
-    return gender == 'Male'
-        ? const Icon(
-            IconData(0xe3c5, fontFamily: 'MaterialIcons'),
-            color: CupertinoColors.systemBlue,
-          )
-        : gender == 'Female'
-            ? const Icon(
-                IconData(0xe261, fontFamily: 'MaterialIcons'),
-                color: CupertinoColors.systemPink,
-              )
-            : const Icon(
-                IconData(0xe679, fontFamily: 'MaterialIcons'),
-                color: CupertinoColors.systemPurple,
-              );
   }
 }
