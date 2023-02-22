@@ -19,17 +19,10 @@ class CharactersCard extends StatelessWidget {
     required this.gender,
   });
 
-  // The properties we will access are : id, name, status, image, species
-  // each card will be a box with rounded corners, a shadow with opacity .5, and a row
-  // The row will have an image on the left, and a column in the center and an arrow on the right
-  // The image will have rounded corners on the top left and bottom left
-  // The column will have the name, status and species
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Navigate to the details page (need to pass the character id as 'characterId' parameter)
         Navigator.pushNamed(
           context,
           CharacterDetails.routeName,
@@ -41,8 +34,11 @@ class CharactersCard extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
         decoration: BoxDecoration(
-          // color is white for light mode, black for dark mode
-          color: CupertinoColors.tertiarySystemBackground,
+          color: CupertinoDynamicColor.resolve(
+            CupertinoColors
+                .tertiarySystemBackground, // Couleur de texte en mode sombre
+            context,
+          ),
           borderRadius: BorderRadius.circular(24),
           boxShadow: const [
             BoxShadow(
@@ -78,28 +74,22 @@ class CharactersCard extends StatelessWidget {
                         children: [
                           Text(
                             name,
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: CupertinoDynamicColor.resolve(
+                                  CupertinoColors
+                                      .label, // Couleur de texte en mode sombre
+                                  context,
+                                )),
                           ),
                         ],
                       ),
                     ),
                     const SizedBox(height: 5),
-                    // Text(
-                    //   status,
-                    //   style: const TextStyle(
-                    //     fontSize: 16,
-                    //     color: CupertinoColors.systemGrey,
-                    //   ),
-                    // ),
                     Row(
                       children: [
-                        // use symbol for gender (male, female or transgender)
-                        // use IconData (MaterialIcons)
                         GenderIcon(gender: gender),
-
                         const SizedBox(width: 5),
                         Container(
                           padding: const EdgeInsets.symmetric(
@@ -118,16 +108,20 @@ class CharactersCard extends StatelessWidget {
                             status,
                             style: const TextStyle(
                               fontSize: 16,
-                              color: CupertinoColors.white,
+                              color: CupertinoColors.label,
                             ),
                           ),
                         ),
                         const SizedBox(width: 5),
                         Text(
                           species,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 16,
-                            color: CupertinoColors.systemGrey,
+                            color: CupertinoDynamicColor.resolve(
+                              CupertinoColors
+                                  .systemGrey, // Couleur de texte en mode sombre
+                              context,
+                            ),
                           ),
                         ),
                       ],
@@ -139,9 +133,13 @@ class CharactersCard extends StatelessWidget {
             Container(
               width: 50,
               height: 100,
-              decoration: const BoxDecoration(
-                color: CupertinoColors.tertiarySystemBackground,
-                borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                color: CupertinoDynamicColor.resolve(
+                  CupertinoColors
+                      .tertiarySystemBackground, // Couleur de texte en mode sombre
+                  context,
+                ),
+                borderRadius: const BorderRadius.only(
                   topRight: Radius.circular(10),
                   bottomRight: Radius.circular(10),
                 ),

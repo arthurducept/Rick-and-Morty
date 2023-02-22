@@ -21,8 +21,14 @@ class CharacterDetails extends StatelessWidget {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                const Text('Character Details'),
-                Text(characterId.toString()),
+                Text('Character Details $characterId',
+                    style: TextStyle(
+                      color: CupertinoDynamicColor.resolve(
+                        CupertinoColors
+                            .label, // Couleur de texte en mode sombre
+                        context,
+                      ),
+                    )),
               ]),
         ));
   }
