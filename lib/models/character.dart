@@ -16,6 +16,17 @@ class CharacterModel {
     required this.gender,
     required this.image,
   });
+
+  factory CharacterModel.fromJson(Map<String, dynamic> json) {
+    return CharacterModel(
+      id: int.parse(json['id']),
+      name: json['name'],
+      status: json['status'],
+      species: json['species'],
+      image: json['image'],
+      gender: json['gender'],
+    );
+  }
 }
 
 // class CharacterModel {

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:rickandmorty/views/home_page.dart';
 import 'package:rickandmorty/views/character_details.dart';
 import 'package:rickandmorty/views/unknown_route_page.dart';
@@ -6,10 +7,12 @@ import 'package:rickandmorty/views/unknown_route_page.dart';
 class App extends StatelessWidget {
   const App({super.key});
 
+  static String title = dotenv.get('FLUTTER_APP_NAME'); // Mandatory
+
   @override
   Widget build(BuildContext context) {
     return CupertinoApp(
-      title: 'Rick and Morty Fanbase',
+      title: title,
       theme: const CupertinoThemeData(
         primaryColor: CupertinoColors.activeBlue,
       ),
@@ -21,13 +24,19 @@ class App extends StatelessWidget {
 
   Route<dynamic> _generateRoute(RouteSettings settings) {
     Map<String, dynamic> arguments = {};
-    // print the route
-    debugPrint("route: ${settings.name}");
+
+    if (dotenv.get('FLUTTER_APP_DEBUG') == 'true') {
+      debugPrint("route: ${settings.name}");
+      debugPrint("route: ${settings.arguments}");
+    }
+
     if (settings.arguments != null) {
       arguments = settings.arguments as Map<String, dynamic>;
     }
     if (settings.name == null) {
-      debugPrint("no route name");
+      if (dotenv.get('FLUTTER_APP_DEBUG') == 'true') {
+        debugPrint("no route name");
+      }
       return CupertinoPageRoute(
         builder: (_) => UnknownRoutePage(route: settings),
         settings: settings,
@@ -45,7 +54,7 @@ class App extends StatelessWidget {
       case CharacterDetails.routeName:
         return CupertinoPageRoute(
           builder: (_) =>
-              CharacterDetails(characterId: arguments['characterId']),
+              CharacterDetails(characterId: arguments['characterId']), // PATCH
           settings: settings,
         );
       default:
