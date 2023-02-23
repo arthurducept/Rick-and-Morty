@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:rickandmorty/components/characters_card.dart';
 import 'package:rickandmorty/components/search_bar.dart';
 import 'package:rickandmorty/models/character.dart';
@@ -34,25 +35,63 @@ class _HomePageState extends State<HomePage> {
                 if (dotenv.get('FLUTTER_APP_DEBUG') == 'true') {
                   debugPrint('Filter button pressed');
                 }
+                showCupertinoModalBottomSheet(
+                  context: context,
+                  builder: (context) => const FiltersModal(),
+                );
               },
               child: const Icon(
                 CupertinoIcons.slider_horizontal_3,
                 color: CupertinoColors.systemBlue,
               ))),
       backgroundColor: CupertinoColors.secondarySystemBackground,
-      child: GetCharactersList(),
-      // child: // search bar and below, the ListView of GetCharactersList
-      //     Expanded(
-      //   child: Column(
-      //     children: const <Widget>[
-      //       // search bar
-      //       SearchBar(),
-      //       Expanded(
-      //         child: GetCharactersList(),
-      //       ),
-      //     ],
-      //   ),
-      // ),
+      // child: const SearchBar(),
+      child: // search bar and below, the ListView of GetCharactersList
+          Expanded(
+        child: Column(
+          children: <Widget>[
+            // search bar
+            SearchBar(onSubmitted: (String value) {
+              if (dotenv.get('FLUTTER_APP_DEBUG') == 'true') {
+                debugPrint('Search bar submitted: $value');
+              }
+            }),
+            const Expanded(
+              child: GetCharactersList(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class FiltersModal extends StatelessWidget {
+  const FiltersModal({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text('Filter',
+              style: TextStyle(
+                  color: CupertinoDynamicColor.resolve(
+                      CupertinoColors.white, context))),
+          CupertinoButton.filled(
+              child: Text('Enregistrer',
+                  style: TextStyle(
+                      color: CupertinoDynamicColor.resolve(
+                          CupertinoColors.white, context))),
+              onPressed: () => {
+                    if (dotenv.get('FLUTTER_APP_DEBUG') == 'true')
+                      {debugPrint('Enregistrer button pressed')}
+                  }),
+        ],
+      ),
     );
   }
 }
@@ -64,6 +103,7 @@ class GetCharactersList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Query(
       options: QueryOptions(
+        // PATCH : ajout des variables de recherche, pagination et filtres
         document: gql(r'''
           query {
             characters(page: 1) {
@@ -99,6 +139,7 @@ class GetCharactersList extends StatelessWidget {
             .toList();
 
         return ListView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
           itemCount: characters.length,
           itemBuilder: (context, index) {
             return CharactersCard(
@@ -110,6 +151,7 @@ class GetCharactersList extends StatelessWidget {
               species: characters[index].species,
             );
           },
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         );
       },
     );

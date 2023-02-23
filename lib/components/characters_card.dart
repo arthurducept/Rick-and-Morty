@@ -40,7 +40,7 @@ class CharactersCard extends StatelessWidget {
         );
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+        margin: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
           color: CupertinoDynamicColor.resolve(
             CupertinoColors
