@@ -33,6 +33,8 @@ class SearchBar extends StatelessWidget {
                   clearButtonMode: OverlayVisibilityMode.editing,
                   autocorrect: false,
                   onSubmitted: onSubmitted,
+                  onChanged: (value) =>
+                      value.isEmpty ? onSubmitted(value) : null,
                 ),
               ),
             ],

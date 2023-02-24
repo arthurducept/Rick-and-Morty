@@ -101,14 +101,19 @@ class CharactersCard extends StatelessWidget {
                         const SizedBox(width: 5),
                         GetStatusBadge(status: status),
                         const SizedBox(width: 5),
-                        Text(
-                          species,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: CupertinoDynamicColor.resolve(
-                              CupertinoColors
-                                  .systemGrey, // Couleur de texte en mode sombre
-                              context,
+                        Expanded(
+                          child: Text(
+                            species,
+                            maxLines: 1,
+                            overflow: TextOverflow.fade,
+                            softWrap: false,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: CupertinoDynamicColor.resolve(
+                                CupertinoColors
+                                    .systemGrey, // Couleur de texte en mode sombre
+                                context,
+                              ),
                             ),
                           ),
                         ),
