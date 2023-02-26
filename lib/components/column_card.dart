@@ -4,7 +4,7 @@ import 'background_box.dart';
 
 class ColumnCard extends StatelessWidget {
   final String title;
-  final List<List<String>> rows;
+  final List<List<String?>> rows;
 
   const ColumnCard({
     super.key,
@@ -39,7 +39,7 @@ class ColumnCard extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        row[0],
+                        row[0] ?? 'unknown',
                         style: TextStyle(
                           color: CupertinoDynamicColor.resolve(
                             CupertinoColors.label,
@@ -51,7 +51,7 @@ class ColumnCard extends StatelessWidget {
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          row[1],
+                          row[1] ?? 'unknown',
                           maxLines: 1,
                           overflow: TextOverflow.fade,
                           softWrap: false,

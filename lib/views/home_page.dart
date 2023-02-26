@@ -109,6 +109,11 @@ class _HomePageState extends State<HomePage> {
                 // result needs id, name, status, species, image, gender,
                 // info needs count, next, prev
                 // variables: page, filter (name, status, species, gender)
+                onError: (error) {
+                  if (dotenv.get('FLUTTER_APP_DEBUG') == 'true') {
+                    debugPrint(error.toString());
+                  }
+                },
                 document: gql(r'''
                       query GetCharactersList($page: Int!, $searchQuery: String, $status: String, $gender: String, $species: String) {
                         characters(page: $page, filter: { name: $searchQuery, status: $status, gender: $gender, species: $species }) {

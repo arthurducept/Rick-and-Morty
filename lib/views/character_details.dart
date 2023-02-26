@@ -1,9 +1,11 @@
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:rickandmorty/components/background_box.dart';
 import 'package:rickandmorty/components/gender_icon.dart';
+import 'package:rickandmorty/components/req_network_image.dart';
 import 'package:rickandmorty/components/status_badge.dart';
 
 import '../components/column_card.dart';
@@ -47,10 +49,11 @@ class _CharacterDetailsState extends State<CharacterDetails> {
             trailing: GetStatusBadge(status: widget.status)),
         child: Stack(
           children: [
-            Image.network(widget.image,
+            ReqNetworkImage(
+                imageUrl: widget.image,
                 fit: BoxFit.fill,
-                height: double.infinity,
-                width: double.infinity),
+                width: double.infinity,
+                height: double.infinity),
             ClipRect(
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 50.0, sigmaY: 50.0),
@@ -71,6 +74,7 @@ class _CharacterDetailsState extends State<CharacterDetails> {
                         padding: const EdgeInsets.symmetric(vertical: 16.0),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8),
+                          // child: ReqNetworkImage(imageUrl: widget.image),
                           child: Image.network(
                             widget.image,
                             fit: BoxFit.cover,
@@ -78,7 +82,13 @@ class _CharacterDetailsState extends State<CharacterDetails> {
                         ),
                       ),
                       Query(
-                        options: QueryOptions(document: gql(r'''
+                        options: QueryOptions(
+                            onError: (error) {
+                              if (dotenv.get('FLUTTER_APP_DEBUG') == 'true') {
+                                debugPrint(error.toString());
+                              }
+                            },
+                            document: gql(r'''
                               query Character($id: ID!) {
                                 character(id: $id) {
                                   id
@@ -104,9 +114,10 @@ class _CharacterDetailsState extends State<CharacterDetails> {
                                   }
                                 }
                               }
-                            '''), variables: {
-                          'id': widget.id,
-                        }),
+                            '''),
+                            variables: {
+                              'id': widget.id,
+                            }),
                         builder: (result, {fetchMore, refetch}) {
                           if (result.hasException) {
                             return Text(result.exception.toString());

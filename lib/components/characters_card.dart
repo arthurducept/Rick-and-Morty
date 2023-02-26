@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:rickandmorty/components/req_network_image.dart';
 import 'package:rickandmorty/components/status_badge.dart';
 import 'package:rickandmorty/views/character_details.dart';
 
@@ -63,11 +64,10 @@ class CharactersCard extends StatelessWidget {
                 topLeft: Radius.circular(10),
                 bottomLeft: Radius.circular(10),
               ),
-              child: Image.network(
-                imageUrl,
-                width: 100,
+              child: ReqNetworkImage(
+                imageUrl: imageUrl,
                 height: 100,
-                fit: BoxFit.cover,
+                width: 100,
               ),
             ),
             Expanded(
